@@ -4,18 +4,21 @@ module Listable
   end
 
   def format_priority(priority)
-    value = ' ⇧' if priority == 'high'
-    value = ' ⇨' if priority == 'medium'
-    value = ' ⇩' if priority == 'low'
-    value = '' if !priority
-    return value
+    case priority
+    when 'high'
+      ' ⇧'
+    when 'medium'
+      ' ⇨'
+    when 'low'
+      ' ⇩'
+    else
+      ''
+    end
   end
 
   def format_date(start_date, end_date = nil)
     dates = start_date.strftime('%D') if start_date
     dates << ' -- ' + end_date.strftime('%D') if end_date
-    dates = 'N/A' if !dates
-    return dates
+    dates ? dates : 'N/A'
   end
-
 end

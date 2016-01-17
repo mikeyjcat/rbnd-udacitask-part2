@@ -7,13 +7,22 @@ class UdaciList
   end
 
   def add(type, description, options = {})
-    type = type.downcase
-    @items.push TodoItem.new(description, options) if type == 'todo'
-    @items.push EventItem.new(description, options) if type == 'event'
-    @items.push LinkItem.new(description, options) if type == 'link'
+    case type.downcase
+    when 'todo'
+      @items.push TodoItem.new(description, options)
+    when 'event'
+      @items.push EventItem.new(description, options)
+    when 'link'
+      @items.push LinkItem.new(description, options)
+    else
+      fail UdaciListErrors::InvalidItemType, 'Type = ' + type
+    end
   end
 
   def delete(index)
+    if index > @items.size + 1
+      fail UdaciListErrors::IndexExceedsListSize, 'Index = ' + index.to_s
+    end
     @items.delete_at(index - 1)
   end
 
