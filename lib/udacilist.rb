@@ -30,8 +30,33 @@ class UdaciList
     puts '-' * @title.length
     puts @title
     puts '-' * @title.length
-    @items.each_with_index do |item, position|
-      puts "#{position + 1}) #{item.details}"
+
+    print_group(TodoItem, ['', 'Todo', 'Due', 'Priority'])
+    print_group(EventItem, ['', 'Event', 'Start', 'End'])
+    print_group(LinkItem, ['', 'Link', 'Site Name'])
+  end
+
+  def print_group(type, headings)
+    rows = []
+    @items.each_with_index do |item, i|
+      rows << [i] + item.line if item.instance_of?(type)
+    end
+    table = Terminal::Table.new(headings: headings, rows: rows)
+    puts table
+  end
+
+  def filter(type)
+    @items.select do |item|
+      case
+      when item.instance_of?(EventItem)
+        true if type == 'event'
+      when item.instance_of?(TodoItem)
+        true if type == 'todo'
+      when item.instance_of?(LinkItem)
+        true if type == 'link'
+      else
+        false
+      end
     end
   end
 end
