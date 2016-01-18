@@ -1,13 +1,26 @@
 # What you added to Udacitask 2.0
 # -------------------------------------------------------
 1. What is the gem of your choice and how did you use it?
+terminal-table to format the items and remove the manual sizing of print items
+
 2. Describe the 2 features you added to the project.
-  a) Feature 1...
-  b) Feature 2...
+  a) Formatted printing with headings, printing the item types together with
+      headings
+  b) Allow for different types of items to be added in any sequence, while 
+      printing all like items together, together with thier item number to allow 
+      deleting of items
+  c) When printing the items, sort by due date ascending when they are todo's 
+      or events
 
 # REFLECTIONS
 # -------------------------------------------------------
 1. How long did you spend working on this project?
+    About four hours
 2. What was the most rewarding challenge you conquered?
+    Trying to do it cleanly
 3. What two additional features did you build? Why?
+    Formatted printing and sorting
+    Manually formatting fields to specific lengths seems like a waste of time
+    Items lists like this should be sorted by date
 4. Where do you still have room to grow?
+    The code in UdaciList does not feel right yet 

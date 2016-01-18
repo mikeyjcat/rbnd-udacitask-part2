@@ -13,6 +13,6 @@ module Listable
   end
 
   def format_date(date)
-    date ? date.strftime('%D') : ''
+    date ? date.strftime('%F') : ''
   end
 end
