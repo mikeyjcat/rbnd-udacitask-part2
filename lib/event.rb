@@ -11,4 +11,8 @@ class EventItem
   def line
     [@description, format_date(@start_date), format_date(@end_date)]
   end
+
+  def self.class_name
+    'event'
+  end
 end

@@ -17,4 +17,8 @@ class TodoItem
   def line
     [@description, format_date(@due), format_priority(@priority)]
   end
+
+  def self.class_name
+    'todo'
+  end
 end

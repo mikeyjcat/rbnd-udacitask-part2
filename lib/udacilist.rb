@@ -26,6 +26,7 @@ class UdaciList
     @items.delete_at(index - 1)
   end
 
+  # prints the full list of list items
   def all
     puts '-' * @title.length
     puts @title
@@ -36,37 +37,33 @@ class UdaciList
     print_group(LinkItem, ['', 'Link', 'Site Name'])
   end
 
+  # print one type of item, formatted in a table
   def print_group(type, headings)
     rows = []
     @items.each_with_index do |item, i|
       rows << [i + 1] + item.line if item.instance_of?(type)
     end
-    table = Terminal::Table.new(headings: headings, rows: sort_lines(type, rows))
+    table = Terminal::Table.new(headings: headings,
+                                rows: sort_lines(type, rows))
     puts table
   end
 
+  # sort the lines by date or alphabetically for links
   def sort_lines(type, rows)
-    if type == TodoItem or type == EventItem
+    if type == TodoItem || type == EventItem
       rows.sort { |rowa, rowb| rowa[2] <=> rowb[2] }
     else
-      rows
+      rows.sort { |rowa, rowb| rowa[1] <=> rowb[1] }
     end
-  end      
+  end
 
+  # return a list containing the objects of a specific type
   def filter(type)
-    list = @items.select do |item|
-      case
-      when item.instance_of?(EventItem)
-        true if type == 'event'
-      when item.instance_of?(TodoItem)
-        true if type == 'todo'
-      when item.instance_of?(LinkItem)
-        true if type == 'link'
-      else
-        false
-      end
+    list = @items.select { |item| item.class.class_name == type }
+    if list.empty?
+      fail UdaciListErrors::NoItems, 'No items of type: ' + type
+    else
+      list
     end
-    fail UdaciListErrors::NoItems, 'No items of type: ' + type if list.empty?
-    return list
   end
 end

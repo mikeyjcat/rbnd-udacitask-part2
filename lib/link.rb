@@ -10,4 +10,8 @@ class LinkItem
   def line
     [@description, @site_name]
   end
+
+  def self.class_name
+    'link'
+  end
 end

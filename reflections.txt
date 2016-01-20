@@ -10,7 +10,7 @@ terminal-table to format the items and remove the manual sizing of print items
       printing all like items together, together with thier item number to allow 
       deleting of items
   c) When printing the items, sort by due date ascending when they are todo's 
-      or events
+      or events, or alphabetically for links
 
 # REFLECTIONS
 # -------------------------------------------------------
@@ -21,6 +21,9 @@ terminal-table to format the items and remove the manual sizing of print items
 3. What two additional features did you build? Why?
     Formatted printing and sorting
     Manually formatting fields to specific lengths seems like a waste of time
-    Items lists like this should be sorted by date
+    Item lists like this should be sorted by date
+    Using the formatting gem enabled me to reduce the amount of code significantl,
+    with the formatting work offloaded onto the gem
 4. Where do you still have room to grow?
-    The code in UdaciList does not feel right yet 
+    Just feels like I need to practice to groove in the syntax, and constructs used
+    so theres less stackoverflow 
