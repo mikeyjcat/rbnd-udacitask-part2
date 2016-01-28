@@ -4,7 +4,7 @@ class LinkItem
 
   def initialize(url, options = {})
     @description = url
-    @site_name = options[:site_name]
+    @site_name = options[:site_name] ? options[:site_name] : ''
   end
 
   def line

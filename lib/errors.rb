@@ -3,6 +3,8 @@ module UdaciListErrors
   end
   class IndexExceedsListSize < StandardError
   end
+  class IndexInvalid < StandardError
+  end
   class InvalidPriority < StandardError
   end
   class NoItems < StandardError

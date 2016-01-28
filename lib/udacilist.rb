@@ -23,11 +23,15 @@ class UdaciList
     if index > @items.size + 1
       fail UdaciListErrors::IndexExceedsListSize, 'Index = ' + index.to_s
     end
+    if index < 1
+      fail UdaciListErrors::IndexInvalid, 'Index = ' + index.to_s
+    end
     @items.delete_at(index - 1)
   end
 
   # prints the full list of list items
   def all
+    resort_array
     puts '-' * @title.length
     puts @title
     puts '-' * @title.length
@@ -43,18 +47,8 @@ class UdaciList
     @items.each_with_index do |item, i|
       rows << [i + 1] + item.line if item.instance_of?(type)
     end
-    table = Terminal::Table.new(headings: headings,
-                                rows: sort_lines(type, rows))
+    table = Terminal::Table.new(headings: headings, rows: rows)
     puts table
-  end
-
-  # sort the lines by date or alphabetically for links
-  def sort_lines(type, rows)
-    if type == TodoItem || type == EventItem
-      rows.sort { |rowa, rowb| rowa[2] <=> rowb[2] }
-    else
-      rows.sort { |rowa, rowb| rowa[1] <=> rowb[1] }
-    end
   end
 
   # return a list containing the objects of a specific type
@@ -65,5 +59,27 @@ class UdaciList
     else
       list
     end
+  end
+
+  # resort array
+  def resort_array
+    new_list = get_sorted_list(TodoItem)
+    new_list += get_sorted_list(EventItem)
+    new_list += get_sorted_list(LinkItem)
+    @items = new_list
+  end
+
+  # get sorted list of a item type
+  def get_sorted_list(type)
+    temp_array = @items.select { |item| item.instance_of?(type) }
+    case
+    when type == TodoItem
+      temp_array.sort! { |i, j| i.due.to_s <=> j.due.to_s }
+    when type == EventItem
+      temp_array.sort! { |i, j| i.start_date.to_s <=> j.start_date.to_s }
+    when type == LinkItem
+      temp_array.sort! { |i, j| i.site_name <=> j.site_name }
+    end
+    temp_array
   end
 end
