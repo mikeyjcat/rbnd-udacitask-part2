@@ -2,7 +2,7 @@ class UdaciList
   attr_reader :title, :items
 
   def initialize(options = {})
-    options[:title] ? @title = options[:title] : @title = 'Untitled List'
+    @title = options[:title] || 'Untitled List'
     @items = []
   end
 
@@ -15,16 +15,15 @@ class UdaciList
     when 'link'
       @items.push LinkItem.new(description, options)
     else
-      fail UdaciListErrors::InvalidItemType, 'Type = ' + type
+      fail UdaciListErrors::InvalidItemType, "Type = #{type}"
     end
   end
 
   def delete(index)
     if index > @items.size + 1
-      fail UdaciListErrors::IndexExceedsListSize, 'Index = ' + index.to_s
-    end
-    if index < 1
-      fail UdaciListErrors::IndexInvalid, 'Index = ' + index.to_s
+      fail UdaciListErrors::IndexExceedsListSize, "Index = #{index}"
+    elsif index < 1
+      fail UdaciListErrors::IndexInvalid, "Index = #{index}"
     end
     @items.delete_at(index - 1)
   end
@@ -43,10 +42,10 @@ class UdaciList
 
   # print one type of item, formatted in a table
   def print_group(type, headings)
-    rows = []
-    @items.each_with_index do |item, i|
-      rows << [i + 1] + item.line if item.instance_of?(type)
+    rows = @items.each_with_index.map do |item, i|
+      [i + 1] + item.line if item.instance_of?(type)
     end
+    rows.compact!
     table = Terminal::Table.new(headings: headings, rows: rows)
     puts table
   end
@@ -55,7 +54,7 @@ class UdaciList
   def filter(type)
     list = @items.select { |item| item.class.class_name == type }
     if list.empty?
-      fail UdaciListErrors::NoItems, 'No items of type: ' + type
+      fail UdaciListErrors::NoItems, "No items of type: #{type}"
     else
       list
     end
@@ -72,12 +71,12 @@ class UdaciList
   # get sorted list of a item type
   def get_sorted_list(type)
     temp_array = @items.select { |item| item.instance_of?(type) }
-    case
-    when type == TodoItem
+    case type
+    when TodoItem
       temp_array.sort! { |i, j| i.due.to_s <=> j.due.to_s }
-    when type == EventItem
+    when EventItem
       temp_array.sort! { |i, j| i.start_date.to_s <=> j.start_date.to_s }
-    when type == LinkItem
+    when LinkItem
       temp_array.sort! { |i, j| i.site_name <=> j.site_name }
     end
     temp_array
